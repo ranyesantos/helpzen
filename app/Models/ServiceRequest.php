@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ServiceRequestStatusType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Device;
@@ -29,5 +30,12 @@ class ServiceRequest extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'status' => ServiceRequestStatusType::class
+        ];
     }
 }
