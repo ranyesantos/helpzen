@@ -33,18 +33,6 @@ class ServiceRequestsTable
                 TextColumn::make('status')
                     ->size(TextSize::Large)
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        ServiceRequestStatusType::Pending->value => 'warning',
-                        ServiceRequestStatusType::Done->value => 'success',
-                        ServiceRequestStatusType::Canceled->value => 'danger',
-                        ServiceRequestStatusType::In_Progress->value => 'info',
-                    })
-                    ->formatStateUsing(fn (string $state) => match ($state) {
-                        ServiceRequestStatusType::Pending->value => __('Pendente'),
-                        ServiceRequestStatusType::Done->value => __('Concluído'),
-                        ServiceRequestStatusType::Canceled->value => __('Cancelado'),
-                        ServiceRequestStatusType::In_Progress->value => __('Em Andamento'),
-                    })
             ])
             ->filters([
                 //
