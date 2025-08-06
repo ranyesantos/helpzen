@@ -5,8 +5,11 @@ namespace Database\Seeders;
 use App\Models\Device;
 use App\Models\ServiceRequest;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,19 +18,49 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo(Permission::all());
 
-        User::factory()->create([
+        $this->generateAdmin();
+        $users = $this->generateCommomUser(15);
+
+        $devices = $this->generateDevices(8);
+
+        $this->generateServiceRequests($users, $devices);
+    }
+
+    private function generateServiceRequests($users, $devices): void
+    {
+        for ($i = 0; $i < rand(12, 28); $i++) {
+            ServiceRequest::factory()
+                ->forUser($users->random())
+                ->forDevice($devices->random())
+                ->create();
+        }
+    }
+
+    private function generateDevices(int $q = 2): Collection
+    {
+        return Device::factory()
+            ->count($q)
+            ->create();
+    }
+
+    private function generateCommomUser(int $q = 2): Collection
+    {
+        return User::factory()
+            ->count($q)
+            ->create();
+    }
+
+    private function generateAdmin(): User
+    {
+        $user = User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@admin.com',
-            'password' => '1234',
-        ]);
-        User::factory()->create([
-            'name' => 'user',
-            'email' => 'user@user.com',
-            'password' => '1234',
-        ]);
-        Device::factory()->count(20)->create();
-        ServiceRequest::factory()->count(20)->create();
+            'password' => Hash::make('password'),
+        ])->assignRole('admin');
+
+        return $user;
     }
 }

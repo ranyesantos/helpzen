@@ -19,16 +19,25 @@ class ServiceRequestFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'model' => $this->faker->word(),
-            // 'brand' => $this->faker->company(),
-            // 'device_code' => strtoupper($this->faker->bothify('DEV-####')),
-            // 'serial_number' => strtoupper($this->faker->bothify('SN-########')),
-            
             'title' => $this->faker->word(),
             'description' => $this->faker->paragraph(),
             'user_id' => User::factory(),
             'device_id' => Device::factory(),
             'status' => $this->faker->randomElement(['pending', 'done', 'canceled', 'in_progress']),
         ];
+    }
+
+    public function forUser(User $user): self
+    {
+        return $this->state(fn () => [
+            'user_id' => $user->id
+        ]);
+    }
+
+    public function forDevice(Device $device): self
+    {
+        return $this->state(fn () => [
+            'device_id' => $device->id
+        ]);
     }
 }
