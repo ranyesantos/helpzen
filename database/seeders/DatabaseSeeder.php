@@ -21,13 +21,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => '1234',
-            'is_admin' => true
         ]);
         User::factory()->create([
             'name' => 'user',
             'email' => 'user@user.com',
             'password' => '1234',
-            'is_admin' => false
         ]);
         Device::factory()->count(20)->create();
         ServiceRequest::factory()->count(20)->create();
