@@ -18,9 +18,7 @@ class UsersTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
-                    ->searchable(),
-                IconColumn::make('is_admin')
-                    ->boolean()
+                    ->searchable()
             ])
             ->filters([
                 //
