@@ -10,20 +10,6 @@ jobs:
   pest-tests:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testing
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,8 +21,8 @@ jobs:
           extensions: mbstring, bcmath, pdo_mysql
           coverage: none
 
-      - name: Copy .env file
-        run: cp .env.example .env
+      - name: Copy .env-testing file
+        run: cp .env-testing.example .env
 
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
