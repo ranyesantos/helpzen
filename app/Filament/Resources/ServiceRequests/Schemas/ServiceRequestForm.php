@@ -37,15 +37,13 @@ class ServiceRequestForm
                             ->required()
                             ->label('Aberto por:')
                             ->options(User::query()->pluck('name', 'id'))
-                            ->searchable()
-                            ->disabled(),
+                            ->searchable(),
         
                         Select::make('device_id')
                             ->required()
                             ->label('Dispositivo')
                             ->options(Device::query()->pluck('serial_number', 'id'))
-                            ->searchable()
-                            ->disabled(),
+                            ->searchable(),
 
                         Select::make('status')
                             ->label('Status')

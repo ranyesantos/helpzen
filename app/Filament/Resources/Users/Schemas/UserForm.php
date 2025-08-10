@@ -17,9 +17,7 @@ class UserForm
                     ->required(),
                 TextInput::make('email')
                     ->email()
-                    ->required(),
-                Toggle::make('is_admin')
-                    ->required(),
+                    ->required()
             ]);
     }
 }

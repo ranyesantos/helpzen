@@ -39,11 +39,6 @@ class UserResource extends Resource
         ];
     }
 
-    public static function canAccess(): bool
-    {
-        return Auth::user()->is_admin == true;
-    }
-
     public static function getPages(): array
     {
         return [

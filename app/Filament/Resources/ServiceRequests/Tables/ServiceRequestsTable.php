@@ -22,13 +22,16 @@ class ServiceRequestsTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->label('Titulo'),
+                    ->label('Titulo')
+                    ->searchable(),
 
                 TextColumn::make('user.name')
-                    ->label('Aberto por:'),
+                    ->label('Aberto por:')
+                    ->searchable(),
 
                 TextColumn::make('device.serial_number')
-                    ->label('Dispositivo'),
+                    ->label('Dispositivo')
+                    ->searchable(),
 
                 TextColumn::make('status')
                     ->size(TextSize::Large)
