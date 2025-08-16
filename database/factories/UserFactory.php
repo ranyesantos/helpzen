@@ -41,4 +41,11 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    public function getAdmin(): UserFactory
+    {
+        return $this->afterCreating(fn ($user) => [
+            $user->assignRole('admin')
+        ]);
+    }
 }

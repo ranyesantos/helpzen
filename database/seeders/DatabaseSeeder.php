@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Device;
 use App\Models\ServiceRequest;
 use App\Models\User;
+use Database\Factories\DeviceFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -21,46 +22,20 @@ class DatabaseSeeder extends Seeder
         $role = Role::create(['name' => 'admin']);
         $role->givePermissionTo(Permission::all());
 
-        $this->generateAdmin();
-        $users = $this->generateCommomUser(15);
-
-        $devices = $this->generateDevices(8);
-
-        $this->generateServiceRequests($users, $devices);
-    }
-
-    private function generateServiceRequests($users, $devices): void
-    {
-        for ($i = 0; $i < rand(12, 28); $i++) {
-            ServiceRequest::factory()
-                ->forUser($users->random())
-                ->forDevice($devices->random())
-                ->create();
-        }
-    }
-
-    private function generateDevices(int $q = 2): Collection
-    {
-        return Device::factory()
-            ->count($q)
+        User::factory()
+            ->getAdmin()
             ->create();
-    }
 
-    private function generateCommomUser(int $q = 2): Collection
-    {
-        return User::factory()
-            ->count($q)
+        $users = User::factory()
+            ->count(15)
             ->create();
+
+        $devices = Device::factory()
+            ->count(9)
+            ->create();
+
+        ServiceRequest::factory()
+            ->generateServiceRequests($users, $devices);
     }
 
-    private function generateAdmin(): User
-    {
-        $user = User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('password'),
-        ])->assignRole('admin');
-
-        return $user;
-    }
 }
