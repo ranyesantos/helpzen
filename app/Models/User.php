@@ -40,6 +40,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
     /**
      * Get the attributes that should be cast.
      *
