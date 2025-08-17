@@ -18,12 +18,7 @@ return new class extends Migration
             $table->longText('description');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('device_id')->constrained();
-            $table->enum('status', [
-                'pending',
-                'done',
-                'canceled',
-                'in_progress'
-            ])->default('pending');
+            $table->string('status')->default('pending');
         });
     }
 
