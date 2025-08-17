@@ -29,6 +29,13 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@admin.com',
                 'password' => 'password'
             ]);
+            
+        User::factory()
+            ->create([
+                'name' => 'user',
+                'email' => 'user@user.com',
+                'password' => 'password'
+            ]);
 
         $users = User::factory()
             ->count(15)
