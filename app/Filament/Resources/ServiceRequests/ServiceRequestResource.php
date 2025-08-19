@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class ServiceRequestResource extends Resource
 {
@@ -20,6 +22,19 @@ class ServiceRequestResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        
+        /** @var \App\Models\User */
+        $user = Auth::user(); 
+
+        if ($user->isAdmin()){
+            return $query;
+        }
+
+        return $query->where('user_id', Auth::id());
+    }
     public static function form(Schema $schema): Schema
     {
         return ServiceRequestForm::configure($schema);
