@@ -5,8 +5,12 @@ namespace Database\Seeders;
 use App\Models\Device;
 use App\Models\ServiceRequest;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Factories\DeviceFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,21 +19,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo(Permission::all());
 
-        User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@admin.com',
-            'password' => '1234',
-            'is_admin' => true
-        ]);
-        User::factory()->create([
-            'name' => 'user',
-            'email' => 'user@user.com',
-            'password' => '1234',
-            'is_admin' => false
-        ]);
-        Device::factory()->count(20)->create();
-        ServiceRequest::factory()->count(20)->create();
+        User::factory()
+            ->getAdmin()
+            ->create([
+                'name' => 'admin',
+                'email' => 'admin@admin.com',
+                'password' => 'password'
+            ]);
+            
+        User::factory()
+            ->create([
+                'name' => 'user',
+                'email' => 'user@user.com',
+                'password' => 'password'
+            ]);
+
+        $users = User::factory()
+            ->count(15)
+            ->create();
+
+        $devices = Device::factory()
+            ->count(9)
+            ->create();
+
+        ServiceRequest::factory()
+            ->generateServiceRequests($users, $devices);
     }
+
 }
